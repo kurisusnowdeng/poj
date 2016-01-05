@@ -1,5 +1,6 @@
-#C++ solutions to POJ problem set
-Completed: 
+#poj solutions
+C++ solutions to POJ problem set
+So far completed: 
 1000
 1001
 1002
