@@ -6,3 +6,4 @@ C++ solutions to POJ problem set. So far completed:
 1003/
 1004/
 1005/
+1006/
