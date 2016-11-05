@@ -7,4 +7,6 @@ C++ solutions to POJ problem set. So far completed:
 1004/
 1005/
 1006/
-1007/
+1007/</br>
+1009/
+1010/
