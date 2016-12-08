@@ -5,31 +5,41 @@ using namespace std;
 int s;
 int n;
 int w[20];
-int x[20];
-int y[20];
+int map[50];
+
+int minrow() {
+	int min = 0;
+	for (int i = 1; i < s; i++) {
+		if (map[i] < map[min])
+			min = i;
+	}
+	return min;
+}
 
 bool dfs(int dep) {
 	if (dep == n)
 		return true;
-	for (int i = 0; i < s; i++) {
-		if (i + w[dep] > s)
-			break;
-		for (int j = 0; j < s; j++) {
-			if (j + w[dep] > s)
-				continue;
+	int r = minrow();
+	for (int i = 10; i > 0; i--) {
+		if (w[i] && r + i <= s) {
 			bool empty = true;
-			for (int k = 0; k < dep; k++) {
-				if (!(x[k] >= i + w[dep] || y[k] >= j + w[dep] ||
-					i >= x[k] + w[k] || j >= y[k] + w[k])) {
+			for (int j = r; j < r + i; j++) {
+				if (map[j] + i > s) {
 					empty = false;
 					break;
 				}
 			}
 			if (empty) {
-				x[dep] = i;
-				y[dep] = j;
+				for (int j = r; j < r + i; j++) {
+					map[j] += i;
+				}
+				w[i]--;
 				if (dfs(dep + 1))
 					return true;
+				w[i]++;
+				for (int j = r; j < r + i; j++) {
+					map[j] -= i;
+				}
 			}
 		}
 	}
@@ -38,23 +48,13 @@ bool dfs(int dep) {
 
 bool solve() {
 	int sum = 0;
-	for (int i = 0; i < n; i++) {
-		sum += w[i] * w[i];
+	for (int i = 1; i <= 10; i++) {
+		sum += w[i] * i * i;
 	}
 	if (s * s != sum) {
 		return false;
 	}
-	for (int i = 0; i < n - 1; i++) {
-		for (int j = i + 1; j < n; j++) {
-			if (w[i] < w[j]) {
-				int temp = w[i];
-				w[i] = w[j];
-				w[j] = temp;
-			}
-		}
-	}
-	memset(x, 0xff, sizeof(x));
-	memset(y, 0xff, sizeof(y));
+	memset(map, 0, sizeof(map));
 	return dfs(0);
 }
 
@@ -64,8 +64,10 @@ int main() {
 	for (int i = 0; i < t; i++) {
 		memset(w, 0, sizeof(w));
 		cin >> s >> n;
+		int x;
 		for (int j = 0; j < n; j++) {
-			cin >> w[j];
+			cin >> x;
+			w[x]++;
 		}
 		if (solve()) {
 			printf("KHOOOOB!\n");
