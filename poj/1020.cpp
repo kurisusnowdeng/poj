@@ -7,24 +7,19 @@ int n;
 int w[20];
 int map[50];
 
-int minrow() {
-	int min = 0;
-	for (int i = 1; i < s; i++) {
-		if (map[i] < map[min])
-			min = i;
-	}
-	return min;
-}
-
 bool dfs(int dep) {
 	if (dep == n)
 		return true;
-	int r = minrow();
+	int r = 0;
+	for (int i = 1; i < s; i++) {
+		if (map[i] < map[r])
+			r = i;
+	}
 	for (int i = 10; i > 0; i--) {
-		if (w[i] && r + i <= s) {
+		if (w[i] && map[r] + i <= s && r + i <= s) {
 			bool empty = true;
 			for (int j = r; j < r + i; j++) {
-				if (map[j] + i > s) {
+				if (map[j] > map[r]) {
 					empty = false;
 					break;
 				}
