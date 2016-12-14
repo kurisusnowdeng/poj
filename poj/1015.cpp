@@ -1,10 +1,9 @@
 #include <iostream>
-#include <stdlib.h>
 
 using namespace std;
 
 int main() {
-	int f[210][30][810];
+	int ***f;
 	int q[20000][3];
 	int p[300], d[300];
 	int res[30];
@@ -14,7 +13,15 @@ int main() {
 	int len = 20000;
 	int zero = 400;
 	while (n && m) {
-		memset(f, 0xff, sizeof(f));
+		f = new int **[n + 1];
+		for (int i = 0; i <= n; i++) {
+			f[i] = new int *[m + 1];
+			for (int j = 0; j <= m; j++) {
+				f[i][j] = new int[(zero + 1) << 1];
+				for (int k = 0; k < ((zero + 1) << 1); k++)
+					f[i][j][k] = -1;
+			}
+		}
 		memset(q, 0, sizeof(q));
 		memset(p, 0, sizeof(p));
 		memset(d, 0, sizeof(d));
@@ -71,6 +78,14 @@ int main() {
 				k -= p[i] - d[i];
 			}
 		}
+		for (int i = 0; i <= n; i++) {
+			for (int j = 0; j <= m; j++) {
+				delete[] f[i][j];
+			}
+			delete[] f[i];
+		}
+		delete[] f;
+
 		int sump = 0;
 		int sumd = 0;
 		for (int i = 1; i <= m; i++) {
